@@ -1,0 +1,48 @@
+name: Build Golden Fitness Gym APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Extract project ZIP
+        run: unzip fitness-club-house-source.zip
+
+      - name: Install dependencies
+        working-directory: fitness-club-house
+        run: npm install
+
+      - name: Build app
+        working-directory: fitness-club-house
+        run: npm run build
+
+      - name: Sync Android
+        working-directory: fitness-club-house
+        run: npx cap sync android
+
+      - name: Build APK
+        working-directory: fitness-club-house/android
+        run: chmod +x gradlew && ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Golden-Fitness-Gym-APK
+          path: fitness-club-house/android/app/build/outputs/apk/debug/app-debug.apk
