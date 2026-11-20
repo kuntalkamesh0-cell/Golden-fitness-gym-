@@ -24,13 +24,18 @@ jobs:
           java-version: 21
 
       - name: Extract project ZIP
-        run: unzip -o fitness-club-house-source.zip
+        run: unzip fitness-club-house-source.zip
+
+      - name: Set Golden Fitness Gym App Name
+        working-directory: fitness-club-house
+        run: |
+          sed -i "s/Fitness Club House/Golden Fitness Gym/g" capacitor.config.ts android/app/src/main/res/values/strings.xml
 
       - name: Install dependencies
         working-directory: fitness-club-house
         run: npm install --legacy-peer-deps
 
-      - name: Build app
+      - name: Build web app
         working-directory: fitness-club-house
         run: npm run build
 
@@ -40,15 +45,13 @@ jobs:
 
       - name: Build APK
         working-directory: fitness-club-house/android
-        run: chmod +x gradlew && ./gradlew assembleDebug
-
-      - name: Rename APK
         run: |
-          cp fitness-club-house/android/app/build/outputs/apk/debug/app-debug.apk Golden-Fitness-Gym.apk
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Golden-Fitness-Gym-APK
-          path: Golden-Fitness-Gym.apk
+          path: fitness-club-house/android/app/build/outputs/apk/debug/app-debug.apk
           
