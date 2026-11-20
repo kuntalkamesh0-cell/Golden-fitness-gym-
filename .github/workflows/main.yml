@@ -25,9 +25,10 @@ jobs:
       - name: Extract project ZIP
         run: unzip fitness-club-house-source.zip
 
-      - name: Install dependencies--legacy-peer-deps
+      - name: Install dependencies
         working-directory: fitness-club-house
-        run: npm install
+        run: npm install --legacy-peer-deps
+    
 
       - name: Build app
         working-directory: fitness-club-house
