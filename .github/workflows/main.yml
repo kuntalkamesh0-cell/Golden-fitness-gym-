@@ -24,7 +24,7 @@ jobs:
 
       - name: Extract Latest Source
         run: |
-          unzip "golden-fitness-gym-android-source (1).zip" -d source
+          unzip "golden-fitness-gym lllllllllll.zip" -d source
 
       - name: Find Project Folder
         run: |
